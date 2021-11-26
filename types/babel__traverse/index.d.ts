@@ -67,6 +67,17 @@ export interface TraverseOptions<S = Node> extends Visitor<S> {
 
 export type ArrayKeys<T> = keyof { [P in keyof T as T[P] extends any[] ? P : never]: P };
 
+// taken from https://github.com/babel/babel/blob/bafa016bff7b41d219e9c2e5363b410b4bbe2556/packages/babel-traverse/src/scope/binding.ts#L5-L13
+type BindingKind =
+  | "var" /* var declarator */
+  | "let" /* let declarator, class declaration id, catch clause parameters */
+  | "const" /* const declarator */
+  | "module" /* import specifiers */
+  | "hoisted" /* function declaration id */
+  | "param" /* function declaration parameters */
+  | "local" /* function expression id, class expression id */
+  | "unknown"; /* export specifiers */
+
 export class Scope {
     constructor(path: NodePath, parentScope?: Scope);
     path: NodePath;
